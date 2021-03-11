@@ -14,7 +14,7 @@
 # (C) 2013-2020
 #
 # SPDX-License-Identifier:    BSD-3-Clause
-
+# SPDX-FileCopyrightText: (C) 2021
 
 # List all of the callout devices in OS/X by querying IOKit.
 

@@ -61,9 +61,9 @@ def comports() -> Sequence[ListPortInfo]:
             # Have we already found a port on the same device? If so, that's a bug.
             # Use the new version for MacOS instead.
             if port.device == interface_to_device.get(port.interface, None):
-                import _list_ports_osx_fixed # pylint: disable=import-outside-toplevel
+                import _list_ports_osx  # pylint: disable=import-outside-toplevel
 
-                ports = _list_ports_osx_fixed.comports()
+                ports = _list_ports_osx.comports()
                 break
 
     return tuple(
