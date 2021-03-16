@@ -46,25 +46,18 @@ from serial.tools.list_ports_common import ListPortInfo
 def comports() -> Sequence[ListPortInfo]:
     """Return all the comports recognized as being associated with a CircuitPython board."""
 
-    ports = serial.tools.list_ports.comports()
-
     if sys.platform == "darwin":
-        # pyserial 3.4 and below have a bug on MacOS that returns an identical
+        # pyserial 3.5 and below have a bug on MacOS that returns an identical
         # interface name for a composite USB device with multiple device names.
         # For instance, a CircuitPython board with two CDC interfaces
         # "CircuitPython CDC control" and "CircuitPython CDC2 control",
         # presenting as two /dev/cu.* devices, will only show one of those interface names.
         # See https://github.com/pyserial/pyserial/pull/566.
-        # Check for this bug. If so, use a fixed version of list_ports_osx.
-        interface_to_device = {}
-        for port in ports:
-            # Have we already found a port on the same device? If so, that's a bug.
-            # Use the new version for MacOS instead.
-            if port.device == interface_to_device.get(port.interface, None):
-                import _list_ports_osx  # pylint: disable=import-outside-toplevel
+        from . import _list_ports_osx  # pylint: disable=import-outside-toplevel
 
-                ports = _list_ports_osx.comports()
-                break
+        ports = _list_ports_osx.comports()
+    else:
+        ports = serial.tools.list_ports.comports()
 
     return tuple(
         port
