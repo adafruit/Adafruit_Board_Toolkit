@@ -30,7 +30,7 @@ setup(
     long_description_content_type="text/x-rst",
     python_requires=">=3.6.0",
     # The project's main homepage.
-    url="https://github.com/adafruit/Adafruit_Board_Toolkit.git",
+    url="https://github.com/adafruit/Adafruit_Board_Toolkit",
     # Author details
     author="Adafruit Industries",
     author_email="circuitpython@adafruit.com",

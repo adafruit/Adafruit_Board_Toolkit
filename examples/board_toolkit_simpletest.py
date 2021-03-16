@@ -2,11 +2,11 @@
 #
 # SPDX-License-Identifier: Unlicense
 
-import adafruit_board_toolkit
+import adafruit_board_toolkit.circuitpython_serial
 
-devices = adafruit_board_toolkit.usb_devices
-if not devices:
+comports = adafruit_board_toolkit.circuitpython_serial.repl_comports()
+if not comports:
     raise Exception("No CircuitPython boards found")
 
-# Print the device path or name used to connect to the REPL.
-print(adafruit_board_toolkit.usb_devices[0].repl_serial_device)
+# Print the device paths or names that connect to a REPL.
+print([comport.device for comport in comports])
