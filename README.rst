@@ -50,13 +50,6 @@ To install in a virtual environment in your current project:
     pip3 install adafruit-board-toolkit
 
 
-
-Usage Example
-=============
-
-.. todo:: Add a quick, simple example. It and other examples should live in the
-examples folder and be included in docs/examples.rst.
-
 Contributing
 ============
 
