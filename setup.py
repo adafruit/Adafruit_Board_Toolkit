@@ -28,7 +28,7 @@ setup(
     description="CircuitPython board identification and information",
     long_description=long_description,
     long_description_content_type="text/x-rst",
-    python_requires=">=3.6.0",
+    python_requires=">=3.5.0",
     # The project's main homepage.
     url="https://github.com/adafruit/Adafruit_Board_Toolkit",
     # Author details
@@ -47,7 +47,7 @@ setup(
         "Topic :: System :: Hardware",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.5",
     ],
     # What does your project relate to?
     keywords="adafruit circuitpython micropython board_toolkit",
