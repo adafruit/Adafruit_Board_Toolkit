@@ -37,6 +37,7 @@ __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_Board_Toolkit.git
 
 from typing import Sequence
 
+import os
 import sys
 
 import serial.tools.list_ports
@@ -56,6 +57,13 @@ def comports() -> Sequence[ListPortInfo]:
         from . import _list_ports_osx  # pylint: disable=import-outside-toplevel
 
         ports = _list_ports_osx.comports()
+    elif os.name == "nt":
+        # pyserial.tools.list_ports_windows does not currently return the interface.
+        # This enhanced version does.
+        from . import _list_ports_windows  # pylint: disable=import-outside-toplevel
+
+        ports = _list_ports_windows.comports()
+
     else:
         ports = serial.tools.list_ports.comports()
 
