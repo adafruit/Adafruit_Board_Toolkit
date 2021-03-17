@@ -4,3 +4,4 @@
 
 [tool.black]
 target-version = ['py35']
+exclude = '_list_ports_.*\.py'

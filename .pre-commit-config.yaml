@@ -7,6 +7,7 @@ repos:
     rev: 20.8b1
     hooks:
     - id: black
+      exclude: _list_ports_.*.py
 -   repo: https://github.com/fsfe/reuse-tool
     rev: v0.12.1
     hooks:
@@ -23,7 +24,7 @@ repos:
     -   id: pylint
         name: pylint (library code)
         types: [python]
-        exclude: "^(docs/|examples/|setup.py$)"
+        exclude: ^(docs/|examples/|setup\.py$)|_list_ports_.*\.py
 -   repo: local
     hooks:
     -   id: pylint_examples
