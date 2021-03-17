@@ -6,3 +6,6 @@
 
 .. automodule:: adafruit_board_toolkit
    :members:
+
+.. automodule:: adafruit_board_toolkit.circuitpython_serial
+   :members:
