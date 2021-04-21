@@ -24,6 +24,9 @@ import sys
 import serial.tools.list_ports
 from serial.tools.list_ports_common import ListPortInfo
 
+# Some CircuitPython boards do not have interface names that start with "CircuitPython".
+INTERFACE_PREFIXES = ("CircuitPython", "Sol", "StringCarM0Ex")
+
 
 def comports() -> Sequence[ListPortInfo]:
     """Return all the comports recognized as being associated with a CircuitPython board."""
@@ -51,14 +54,22 @@ def comports() -> Sequence[ListPortInfo]:
     return tuple(
         port
         for port in ports
-        if port.interface and port.interface.startswith("CircuitPython CDC")
+        if port.interface
+        and port.interface.startswith(
+            tuple((prefix + " CDC" for prefix in INTERFACE_PREFIXES))
+        )
     )
 
 
 def repl_comports() -> Sequence[ListPortInfo]:
     """Return all comports presenting a CircuitPython REPL."""
+    # The trailing space in " CDC " is deliberate.
     return tuple(
-        port for port in comports() if port.interface.startswith("CircuitPython CDC ")
+        port
+        for port in comports()
+        if port.interface.startswith(
+            tuple(prefix + " CDC " for prefix in INTERFACE_PREFIXES)
+        )
     )
 
 
@@ -66,6 +77,11 @@ def data_comports() -> Sequence[ListPortInfo]:
     """Return all comports presenting a CircuitPython serial connection
     used for data transfer, not the REPL.
     """
+    # The trailing space in " CDC2 " is deliberate.
     return tuple(
-        port for port in comports() if port.interface.startswith("CircuitPython CDC2 ")
+        port
+        for port in comports()
+        if port.interface.startswith(
+            tuple(prefix + " CDC2 " for prefix in INTERFACE_PREFIXES)
+        )
     )
