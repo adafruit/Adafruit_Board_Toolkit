@@ -59,7 +59,7 @@ iokit.IOServiceGetMatchingServices.argtypes = [ctypes.c_void_p, ctypes.c_void_p,
 iokit.IOServiceGetMatchingServices.restype = kern_return_t
 
 iokit.IORegistryEntryGetParentEntry.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p]
-iokit.IOServiceGetMatchingServices.restype = kern_return_t
+iokit.IORegistryEntryGetParentEntry.restype = kern_return_t
 
 iokit.IORegistryEntryCreateCFProperty.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_uint32]
 iokit.IORegistryEntryCreateCFProperty.restype = ctypes.c_void_p
@@ -235,15 +235,41 @@ class SuitableSerialInterface(object):
     pass
 
 
+def scan_interfaces():
+    """
+    helper function to scan USB interfaces
+    returns a list of SuitableSerialInterface objects with name and id attributes
+    """
+    interfaces = []
+    # this is for [High] Sierra compatibility (AppleUSBInterface ?)
+    for interface in GetIOServicesByType('IOUSBInterface'):
+        name = get_string_property(interface, "USB Interface Name")
+        if name is None: continue
+        locationID = get_int_property(interface, "locationID", kCFNumberSInt32Type)
+        bInterfaceNumber = get_int_property(interface, "bInterfaceNumber", kCFNumberSInt32Type)
+        i = SuitableSerialInterface()
+        i.id = (locationID, bInterfaceNumber)
+        i.name = name
+        interfaces.append(i)
+    return interfaces
+
+
+def search_in_interfaces(serial_interfaces, identifier):
+    for interface in serial_interfaces:
+        if (interface.id == identifier):
+            return interface.name
+    return None
+
+
 def comports(include_links=False):
     # XXX include_links is currently ignored. are links in /dev even supported here?
     # Scan for all iokit serial ports
     services = GetIOServicesByType('IOSerialBSDClient')
     ports = []
+    serial_interfaces = None
     for service in services:
         # First, add the callout device file.
         device = get_string_property(service, "IOCalloutDevice")
-        #device = get_string_property(service, "IODialinDevice")
         if device:
             info = list_ports_common.ListPortInfo(device)
             # find the serial interface associated with this device
@@ -270,9 +296,16 @@ def comports(include_links=False):
                 locationID = get_int_property(usb_device, "locationID", kCFNumberSInt32Type)
                 info.location = location_to_string(locationID)
                 info.interface = get_string_property(serial_interface, "kUSBString")
-                # "kUSBString" might not be available on older macOS ? who knows ?
+                # "kUSBString" might not be available on older macOS
                 if info.interface is None:
                     info.interface = get_string_property(serial_interface, "USB Interface Name")
+                if info.interface is None:
+                    # macOS 10.13 or earlier, the interface name is not in the hierarchy
+                    # of the serial port, use the scan to find it out there
+                    if serial_interfaces is None:
+                        serial_interfaces = scan_interfaces()
+                    bInterfaceNumber = get_int_property(serial_interface, "bInterfaceNumber", kCFNumberSInt32Type)
+                    info.interface = search_in_interfaces(serial_interfaces, (locationID, bInterfaceNumber))
                 info.apply_usb_info()
             ports.append(info)
     return ports
