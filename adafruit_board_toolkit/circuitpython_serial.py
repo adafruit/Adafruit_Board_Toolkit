@@ -14,7 +14,7 @@ CircuitPython board identification and information
 # imports
 
 __version__ = "0.0.0-auto.0"
-__repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_Board_Toolkit.git"
+__repo__ = "https://github.com/adafruit/Adafruit_Board_Toolkit.git"
 
 from typing import Sequence
 

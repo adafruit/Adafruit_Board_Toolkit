@@ -127,7 +127,7 @@ html_static_path = ["_static"]
 html_favicon = "_static/favicon.ico"
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "Adafruit_CircuitPython_Board_toolkitLibrarydoc"
+htmlhelp_basename = "Adafruit_Board_toolkitLibrarydoc"
 
 # -- Options for LaTeX output ---------------------------------------------
 
