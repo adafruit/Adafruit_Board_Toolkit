@@ -35,7 +35,7 @@ setup(
     author="Adafruit Industries",
     author_email="circuitpython@adafruit.com",
     install_requires=[
-        "pyserial",
+        "pyserial~=3.5",
     ],
     # Choose your license
     license="MIT",
