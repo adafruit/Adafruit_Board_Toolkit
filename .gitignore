@@ -17,3 +17,4 @@ bundles
 dist
 **/*.egg-info
 .vscode
+.venv/*
