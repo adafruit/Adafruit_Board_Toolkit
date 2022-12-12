@@ -67,5 +67,5 @@ jobs:
       run: |
         pip install --upgrade setuptools wheel twine readme_renderer testresources
         python setup.py sdist
-        python setup.py bdist_wheel --universal
+        python setup.py bdist_wheel
         twine check dist/*
