@@ -22,13 +22,15 @@ jobs:
         awk -F '\/' '{ print tolower($2) }' |
         tr '_' '-'
         )
-    - name: Set up Python 3.6
-      uses: actions/setup-python@v1
+    - name: Set up Python
+      uses: actions/setup-python@v4
       with:
-        python-version: 3.6
+        python-version: '3.x'
     - name: Versions
       run: |
-        python3 --version
+        python --version
+        python -m pip --version
+        python -m pip list
     - name: Checkout Current Repo
       uses: actions/checkout@v1
       with:
@@ -67,5 +69,5 @@ jobs:
       run: |
         pip install --upgrade setuptools wheel twine readme_renderer testresources
         python setup.py sdist
-        python setup.py bdist_wheel --universal
+        python setup.py bdist_wheel
         twine check dist/*
